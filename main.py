@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.responses import StreamingResponse
-from PIL import Image, ImageDraw, ImageFont
 from minecraft import MCtext
 
 app = FastAPI()
