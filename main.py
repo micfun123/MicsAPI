@@ -14,7 +14,7 @@ app = FastAPI(
 
 )
 
-mfont = ImageFont.truetype('/font/MinecraftEvenings.ttf', 25)
+mfont = ImageFont.truetype('.fonts\MinecraftEvenings.ttf', 25)
 
 def get_text_dimensions(text_string, font):
     ascent, descent = font.getmetrics()
