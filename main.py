@@ -1,7 +1,5 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse , RedirectResponse , StreamingResponse
-from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 
