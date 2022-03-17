@@ -1,8 +1,9 @@
+from fastapi import APIRouter
 from PIL import Image, ImageDraw, ImageFont
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
+from io import BytesIO
 
-text = "Minecraft Super Cool API That I Made"
 font = ImageFont.truetype('font\Minecraft Evenings.ttf', 25)
 
 def get_text_dimensions(text_string, font):
@@ -13,12 +14,16 @@ def get_text_dimensions(text_string, font):
 
     return (text_width, text_height)
 
+def MCtext(text):
+    x,y = get_text_dimensions(text, font)
+    im = Image.new('RGBA', (x+5, y+5), (255, 255, 255, 0))
+    draw = ImageDraw.Draw(im)
 
-x,y = get_text_dimensions(text, font)
-im = Image.new('RGBA', (x+5, y+5), (255, 255, 255, 0))
-draw = ImageDraw.Draw(im)
+    draw.text((5,5), text, fill=(128 , 128 , 128),font=font)
 
-draw.text((5,5), text, fill=(128 , 128 , 128),font=font)
-
-im.save('test.png')
+    d = BytesIO()
+    d.seek(0)
+    im.save(d, "PNG")
+    d.seek(0)
+    return d
 
