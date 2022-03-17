@@ -1,19 +1,32 @@
 from PIL import Image, ImageDraw, ImageFont
-import textwrap
+from cv2 import line
 
-astr = '''Test of my new API like it?'''
-para = textwrap.wrap(astr, width=15)
+text = "Minecraft OG"
+font = ImageFont.truetype('font\Minecraft Evenings.ttf', 25)
 
-MAX_W, MAX_H = 300, 300
-im = Image.new('RGBA', (MAX_W, MAX_H), (255, 255, 255, 0))
+def get_text_dimensions(text_string, font):
+    # https://stackoverflow.com/a/46220683/9263761
+    ascent, descent = font.getmetrics()
+
+    text_width = font.getmask(text_string).getbbox()[2]
+    text_height = font.getmask(text_string).getbbox()[3] + descent
+
+    return (text_width, text_height)
+
+
+x,y = get_text_dimensions(text, font)
+print(x)
+print(y)
+print(x+5)
+print(y+5)
+
+
+
+
+im = Image.new('RGBA', (x+5, y+5), (255, 255, 255, 0))
 draw = ImageDraw.Draw(im)
-font = ImageFont.truetype(
-    'font\Minecraft Evenings.ttf', 25)
 
-current_h, pad = 50, 10
-for line in para:
-    w, h = draw.textsize(line, font=font)
-    draw.text(((MAX_W - w) / 2, current_h), line, fill=(128 , 128 , 128),font=font)
-    current_h += h + pad
+draw.text((5,5), text, fill=(128 , 128 , 128),font=font)
 
 im.save('test.png')
+
