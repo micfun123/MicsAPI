@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse , RedirectResponse , StreamingResponse
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from minecraft import MCtext
+
 
 app = FastAPI(
     title = "Mics TextAPI",
@@ -21,9 +21,3 @@ def root():
     return RedirectResponse("/docs")
     
 
-@app.get("/api/mctext/", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
-async def mctext(Text : str):
-       
-    file = MCtext(Text) 
-
-    return StreamingResponse(file, media_type="image/png")
