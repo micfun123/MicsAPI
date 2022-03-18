@@ -16,6 +16,7 @@ app = FastAPI(
 
 fontm = ImageFont.truetype('fontm.ttf', 50)
 fontp = ImageFont.truetype('PokemonSolid.ttf', 50)
+fonta = ImageFont.truetype('AvengeroRegular.ttf', 50)
 
 def get_text_dimensions(text_string, font):
     ascent, descent = font.getmetrics()
@@ -51,6 +52,19 @@ def pokemontextmaker(text):
     d.seek(0)
     return d
 
+def theavengersmaker(text):
+    x,y = get_text_dimensions(text, fonta)
+    im = Image.new('RGBA', (x+5, y+5), (255, 255, 255, 0))
+    draw = ImageDraw.Draw(im)
+
+    draw.text((5,5), text, fill=(255 , 253 , 48),stroke_width=3, stroke_fill=(56,106,187) ,font=fonta)
+
+    d = BytesIO()
+    d.seek(0)
+    im.save(d, "PNG")
+    d.seek(0)
+    return d
+
 
 @app.get("/")
 def root():
@@ -68,5 +82,14 @@ async def mctext(Text : str):
 async def pokemontext(Text : str):
        
     file = pokemontextmaker(Text) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+
+
+@app.get("/api/text/the avengers", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def theavengerstext(Text : str):
+       
+    file = theavengersmaker(Text) 
 
     return StreamingResponse(file, media_type="image/png")
