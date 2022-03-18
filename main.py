@@ -15,6 +15,7 @@ app = FastAPI(
 )
 
 fontm = ImageFont.truetype('fontm.ttf', 50)
+fontp = ImageFont.truetype('PokemonSolid.ttf', 50)
 
 def get_text_dimensions(text_string, font):
     ascent, descent = font.getmetrics()
@@ -37,14 +38,35 @@ def MCtext(text):
     d.seek(0)
     return d
 
+def pokemontextmaker(text):
+    x,y = get_text_dimensions(text, fontp)
+    im = Image.new('RGBA', (x+5, y+5), (255, 255, 255, 0))
+    draw = ImageDraw.Draw(im)
+
+    draw.text((5,5), text, fill=(255 , 253 , 48),stroke_width=3, stroke_fill=(56,106,187) ,font=fontp)
+
+    d = BytesIO()
+    d.seek(0)
+    im.save(d, "PNG")
+    d.seek(0)
+    return d
+
+
 @app.get("/")
 def root():
     return RedirectResponse("/docs")
     
 
-@app.get("/api/mctext/", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+@app.get("/api/text/Minecraft", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
 async def mctext(Text : str):
        
     file = MCtext(Text) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+@app.get("/api/text/pokemon", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def pokemontext(Text : str):
+       
+    file = pokemontextmaker(Text) 
 
     return StreamingResponse(file, media_type="image/png")
