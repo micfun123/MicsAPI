@@ -57,7 +57,7 @@ def theavengersmaker(text):
     im = Image.new('RGBA', (x+5, y+5), (255, 255, 255, 0))
     draw = ImageDraw.Draw(im)
 
-    draw.text((5,5), text, fill=(255 , 253 , 48),stroke_width=3, stroke_fill=(56,106,187) ,font=fonta)
+    draw.text((5,5), text, fill=(234 , 1 , 26),stroke_width=3, stroke_fill=(154,152,159) ,font=fonta)
 
     d = BytesIO()
     d.seek(0)
@@ -87,7 +87,7 @@ async def pokemontext(Text : str):
 
 
 
-@app.get("/api/text/the avengers", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+@app.get("/api/text/theavengers", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
 async def theavengerstext(Text : str):
        
     file = theavengersmaker(Text) 
