@@ -14,7 +14,7 @@ app = FastAPI(
 
 )
 
-font = ImageFont.truetype('fontm.ttf', 50)
+fontm = ImageFont.truetype('fontm.ttf', 50)
 
 def get_text_dimensions(text_string, font):
     ascent, descent = font.getmetrics()
@@ -25,11 +25,11 @@ def get_text_dimensions(text_string, font):
     return (text_width, text_height)
 
 def MCtext(text):
-    x,y = get_text_dimensions(text, font)
+    x,y = get_text_dimensions(text, fontm)
     im = Image.new('RGBA', (x+5, y+5), (255, 255, 255, 0))
     draw = ImageDraw.Draw(im)
 
-    draw.text((5,5), text, fill=(128 , 128 , 128),font=font)
+    draw.text((5,5), text, fill=(128 , 128 , 128),font=fontm)
 
     d = BytesIO()
     d.seek(0)
