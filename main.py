@@ -14,7 +14,7 @@ app = FastAPI(
 
 )
 
-font = ImageFont.truetype('fontm.ttf', 25)
+font = ImageFont.truetype('fontm.ttf', 50)
 
 def get_text_dimensions(text_string, font):
     ascent, descent = font.getmetrics()
