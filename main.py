@@ -2,6 +2,9 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse , RedirectResponse , StreamingResponse
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
+import urllib.request
+import io
+import os
 
 app = FastAPI(
     title = "Mics TextAPI",
@@ -13,6 +16,7 @@ app = FastAPI(
     },
 
 )
+
 
 fontm = ImageFont.truetype('fontm.ttf', 50)
 fontp = ImageFont.truetype('PokemonSolid.ttf', 50)
@@ -65,6 +69,23 @@ def theavengersmaker(text):
     d.seek(0)
     return d
 
+def generate_image_Wanted(imageUrl):
+
+    with urllib.request.urlopen(imageUrl) as url:
+        f = io.BytesIO(url.read())
+
+    im1 = Image.open("images/wanted.jpg")
+    im2 = Image.open(f)
+    im2 = im2.resize((300, 285))
+
+    img = im1.copy()
+    img.paste(im2, (85, 230))
+    d = BytesIO()
+    d.seek(0)
+    img.save(d, "PNG")
+    d.seek(0)
+    return d
+
 
 @app.get("/")
 def root():
@@ -91,5 +112,13 @@ async def pokemontext(Text : str):
 async def theavengerstext(Text : str):
        
     file = theavengersmaker(Text) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+
+@app.get("/filters/wanted", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def wanted(image_url : str):
+       
+    file = generate_image_Wanted(image_url) 
 
     return StreamingResponse(file, media_type="image/png")
