@@ -2,9 +2,11 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse , RedirectResponse , StreamingResponse
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
-import urllib.request
+import urllib.request 
 import io
 import os
+ 
+ 
 
 app = FastAPI(
     title = "Mics TextAPI",
@@ -70,10 +72,11 @@ def theavengersmaker(text):
     return d
 
 def generate_image_Wanted(imageUrl):
-
-    with urllib.request.urlopen(imageUrl) as url:
-        f = io.BytesIO(url.read())
-
+    hdr = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+    req = urllib.request.Request(imageUrl, headers=hdr)
+    response = urllib.request.urlopen(req) 
+    f = io.BytesIO(response.read())
+    
     im1 = Image.open("images/wanted.jpg")
     im2 = Image.open(f)
     im2 = im2.resize((300, 285))
