@@ -124,7 +124,7 @@ def generate_image_Trash(imageUrl):
     return d
 
 def generate_image_I_wish(text):
-    im = Image.open("images\Iwish.jpg")
+    im = Image.open("images/Iwish.jpg")
     draw = ImageDraw.Draw(im)
     font = ImageFont.truetype("Roboto-Black.ttf", 16)
     draw.text((60, 290), text, fill=(0, 0, 0),font=font)
