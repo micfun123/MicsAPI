@@ -89,6 +89,24 @@ def generate_image_Wanted(imageUrl):
     d.seek(0)
     return d
 
+def generate_image_Trash(imageUrl):
+    hdr = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+    req = urllib.request.Request(imageUrl, headers=hdr)
+    response = urllib.request.urlopen(req) 
+    f = io.BytesIO(response.read())
+    
+    im1 = Image.open("images/trash.png")
+    im2 = Image.open(f)
+    im2 = im2.resize((75, 75))
+
+    img = im1.copy()
+    img.paste(im2, (90, 380))
+    d = BytesIO()
+    d.seek(0)
+    img.save(d, "PNG")
+    d.seek(0)
+    return d
+
 
 @app.get("/")
 def root():
