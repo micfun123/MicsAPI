@@ -123,6 +123,19 @@ def generate_image_Trash(imageUrl):
     d.seek(0)
     return d
 
+def generate_image_I_wish(text):
+    im = Image.open("images\Iwish.jpg")
+    draw = ImageDraw.Draw(im)
+    font = ImageFont.truetype("Roboto-Black.ttf", 16)
+    draw.text((60, 290), text, fill=(0, 0, 0),font=font)
+
+    d = BytesIO()
+    d.seek(0)
+    im.save(d, "PNG")
+    d.seek(0)
+    return d
+
+
 
 @app.get("/")
 def root():
@@ -171,5 +184,12 @@ async def QRcodemaker(Text : str):
 async def trash(image_url : str):
        
     file = generate_image_Trash(image_url) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+@app.get("/filters/I_wish", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def I_wish(text):
+       
+    file = generate_image_I_wish(text) 
 
     return StreamingResponse(file, media_type="image/png")
