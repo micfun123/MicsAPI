@@ -111,7 +111,7 @@ def generate_image_Trash(imageUrl):
     response = urllib.request.urlopen(req) 
     f = io.BytesIO(response.read())
     
-    im1 = Image.open("images/trash.png")
+    im1 = Image.open("images/trasher.jpg")
     im2 = Image.open(f)
     im2 = im2.resize((75, 75))
 
@@ -164,4 +164,12 @@ async def wanted(image_url : str):
 async def QRcodemaker(Text : str):
        
     file = qrcodemaker(Text) 
+    return StreamingResponse(file, media_type="image/png")
+
+
+@app.get("/filters/trash", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def trash(image_url : str):
+       
+    file = generate_image_Trash(image_url) 
+
     return StreamingResponse(file, media_type="image/png")
