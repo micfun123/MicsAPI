@@ -6,7 +6,7 @@ import urllib.request
 import io
 import os
 import qrcode
- 
+import textwrap
 
 app = FastAPI(
     title = "Mics TextAPI",
@@ -135,6 +135,26 @@ def generate_image_I_wish(text):
     d.seek(0)
     return d
 
+def generate_image_ifread(text):
+    im = Image.open("images/iftheycouldread.jpg")
+    draw = ImageDraw.Draw(im)
+    font = ImageFont.truetype("Roboto-Black.ttf", 16)
+
+    margin = 265
+    offset = 85
+    for line in textwrap.wrap(text, width=20):
+            draw.text((margin, offset), line, font=font, fill=(0, 0, 0))
+            offset += font.getsize(line)[1]
+
+    
+
+    d = BytesIO()
+    d.seek(0)
+    im.save(d, "PNG")
+    d.seek(0)
+    return d
+
+
 
 
 @app.get("/")
@@ -191,5 +211,12 @@ async def trash(image_url : str):
 async def I_wish(text):
        
     file = generate_image_I_wish(text) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+@app.get("/Memes/if_the_could_read", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def if_the_could_read(text):
+       
+    file = generate_image_ifread(text) 
 
     return StreamingResponse(file, media_type="image/png")
