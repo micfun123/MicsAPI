@@ -5,13 +5,13 @@ from io import BytesIO
 import urllib.request 
 import io
 import os
- 
+import qrcode
  
 
 app = FastAPI(
     title = "Mics TextAPI",
     description="Generate image text in a video game font \n This what made by Michael twitter = https://twitter.com/Michaelrbparker ",
-    version="0.1.0",
+    version="2.1.0",
     license_info={
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT",
@@ -23,6 +23,22 @@ app = FastAPI(
 fontm = ImageFont.truetype('fontm.ttf', 50)
 fontp = ImageFont.truetype('PokemonSolid.ttf', 50)
 fonta = ImageFont.truetype('AvengeroRegular.ttf', 50)
+
+def qrcodemaker(text):
+    qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_L,
+    box_size=10,
+    border=4,
+    )
+    qr.add_data(text)
+    qr.make(fit=True)
+    img = qr.make_image()
+    d = BytesIO()
+    d.seek(0)
+    img.save(d, "PNG")
+    d.seek(0)
+    return d
 
 def get_text_dimensions(text_string, font):
     ascent, descent = font.getmetrics()
@@ -142,4 +158,10 @@ async def wanted(image_url : str):
        
     file = generate_image_Wanted(image_url) 
 
+    return StreamingResponse(file, media_type="image/png")
+
+@app.get("/api/other/QRCode", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def QRcodemaker(Text : str):
+       
+    file = qrcodemaker(Text) 
     return StreamingResponse(file, media_type="image/png")
