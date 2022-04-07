@@ -127,7 +127,12 @@ def generate_image_I_wish(text):
     im = Image.open("images/Iwish.jpg")
     draw = ImageDraw.Draw(im)
     font = ImageFont.truetype("Roboto-Black.ttf", 16)
-    draw.text((60, 290), text, fill=(0, 0, 0),font=font)
+    margin = 60
+    offset = 290
+    for line in textwrap.wrap(text, width=30):
+            draw.text((margin, offset), line, font=font, fill=(0, 0, 0))
+            offset += font.getsize(line)[1]
+
 
     d = BytesIO()
     d.seek(0)
