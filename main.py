@@ -164,9 +164,9 @@ def generate_image_um_dad(text):
     draw = ImageDraw.Draw(im)
     font = ImageFont.truetype("Roboto-Black.ttf", 16)
 
-    margin = 90
-    offset = 429
-    for line in textwrap.wrap(text, width=20):
+    margin = 80
+    offset = 420
+    for line in textwrap.wrap(text, width=25):
             draw.text((margin, offset), line, font=font, fill=(0, 0, 0))
             offset += font.getsize(line)[1]
 
