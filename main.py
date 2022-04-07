@@ -159,6 +159,25 @@ def generate_image_ifread(text):
     d.seek(0)
     return d
 
+def generate_image_um_dad(text):
+    im = Image.open("images/Umdad.jpg")
+    draw = ImageDraw.Draw(im)
+    font = ImageFont.truetype("Roboto-Black.ttf", 16)
+
+    margin = 90
+    offset = 429
+    for line in textwrap.wrap(text, width=20):
+            draw.text((margin, offset), line, font=font, fill=(0, 0, 0))
+            offset += font.getsize(line)[1]
+
+    
+
+    d = BytesIO()
+    d.seek(0)
+    im.save(d, "PNG")
+    d.seek(0)
+    return d
+
 
 
 
@@ -223,5 +242,12 @@ async def I_wish(text):
 async def if_the_could_read(text):
        
     file = generate_image_ifread(text) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+@app.get("/Memes/um_dad", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def um_dad(text):
+       
+    file = generate_image_um_dad(text) 
 
     return StreamingResponse(file, media_type="image/png")
