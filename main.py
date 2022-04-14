@@ -179,6 +179,24 @@ def generate_image_um_dad(text):
     return d
 
 
+def headachegen(text):
+    im = Image.open("images/headache.png")
+    draw = ImageDraw.Draw(im)
+    font = ImageFont.truetype("Roboto-Black.ttf", 16)
+
+    margin = 160
+    offset = 200
+    for line in textwrap.wrap(text, width=15):
+            draw.text((margin, offset), line, font=font, fill=(0, 0, 0))
+            offset += font.getsize(line)[1]
+
+    
+
+    d = BytesIO()
+    d.seek(0)
+    im.save(d, "PNG")
+    d.seek(0)
+    return d
 
 
 @app.get("/")
@@ -249,5 +267,12 @@ async def if_the_could_read(text):
 async def um_dad(text):
        
     file = generate_image_um_dad(text) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+@app.get("/Memes/headache", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def headache(text):
+       
+    file = headachegen(text) 
 
     return StreamingResponse(file, media_type="image/png")
