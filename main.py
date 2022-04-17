@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse , RedirectResponse , StreamingResponse
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont , ImageEnhance
 from io import BytesIO
 import urllib.request 
 import io
@@ -179,6 +179,44 @@ def generate_image_um_dad(text):
     return d
 
 
+def image_Enhance_contrast(imageUrl):
+    hdr = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+    req = urllib.request.Request(imageUrl, headers=hdr)
+    response = urllib.request.urlopen(req) 
+    f = io.BytesIO(response.read())
+    img = Image.open(f)
+    contrast = ImageEnhance.Contrast(img)
+    d = BytesIO()
+    d.seek(0)
+    contrast.enhance(1.5).save(d, "PNG")
+    d.seek(0)
+    return d
+
+def image_Enhance_colour(imageUrl):
+    hdr = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+    req = urllib.request.Request(imageUrl, headers=hdr)
+    response = urllib.request.urlopen(req) 
+    f = io.BytesIO(response.read())
+    img = Image.open(f)
+    Color = ImageEnhance.Color(img)
+    d = BytesIO()
+    d.seek(0)
+    Color.enhance(1.5).save(d, "PNG")
+    d.seek(0)
+    return d
+
+def image_black_white(imageUrl):
+    hdr = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+    req = urllib.request.Request(imageUrl, headers=hdr)
+    response = urllib.request.urlopen(req) 
+    f = io.BytesIO(response.read())
+    img = Image.open(f)
+    Color = ImageEnhance.Color(img)
+    d = BytesIO()
+    d.seek(0)
+    Color.enhance(0.0).save(d, "PNG")
+    d.seek(0)
+    return d
 
 
 @app.get("/")
@@ -249,5 +287,27 @@ async def if_the_could_read(text):
 async def um_dad(text):
        
     file = generate_image_um_dad(text) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+
+@app.get("/Image/contrast_enhance", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def um_dad(text):
+       
+    file = image_Enhance_contrast(text) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+@app.get("/Image/colour_enhance", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def um_dad(text):
+       
+    file = image_Enhance_colour(text) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+@app.get("/Image/back_and_white", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def um_dad(text):
+       
+    file = image_black_white(text) 
 
     return StreamingResponse(file, media_type="image/png")
