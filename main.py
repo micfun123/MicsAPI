@@ -179,6 +179,7 @@ def generate_image_um_dad(text):
     return d
 
 
+<<<<<<< HEAD
 def image_Enhance_contrast(imageUrl):
     hdr = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
     req = urllib.request.Request(imageUrl, headers=hdr)
@@ -215,6 +216,24 @@ def image_black_white(imageUrl):
     d = BytesIO()
     d.seek(0)
     Color.enhance(0.0).save(d, "PNG")
+=======
+def headachegen(text):
+    im = Image.open("images/headache.png")
+    draw = ImageDraw.Draw(im)
+    font = ImageFont.truetype("Roboto-Black.ttf", 16)
+
+    margin = 160
+    offset = 200
+    for line in textwrap.wrap(text, width=15):
+            draw.text((margin, offset), line, font=font, fill=(0, 0, 0))
+            offset += font.getsize(line)[1]
+
+    
+
+    d = BytesIO()
+    d.seek(0)
+    im.save(d, "PNG")
+>>>>>>> affce692b288b06639231bd58727581de56bc3ac
     d.seek(0)
     return d
 
@@ -290,7 +309,13 @@ async def um_dad(text):
 
     return StreamingResponse(file, media_type="image/png")
 
+@app.get("/Memes/headache", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def headache(text):
+       
+    file = headachegen(text) 
 
+    return StreamingResponse(file, media_type="image/png")
+    
 @app.get("/Image/contrast_enhance", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
 async def um_dad(text):
        
