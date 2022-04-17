@@ -179,7 +179,6 @@ def generate_image_um_dad(text):
     return d
 
 
-<<<<<<< HEAD
 def image_Enhance_contrast(imageUrl):
     hdr = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
     req = urllib.request.Request(imageUrl, headers=hdr)
@@ -216,7 +215,9 @@ def image_black_white(imageUrl):
     d = BytesIO()
     d.seek(0)
     Color.enhance(0.0).save(d, "PNG")
-=======
+    d.seek(0)
+    return d
+
 def headachegen(text):
     im = Image.open("images/headache.png")
     draw = ImageDraw.Draw(im)
@@ -233,7 +234,6 @@ def headachegen(text):
     d = BytesIO()
     d.seek(0)
     im.save(d, "PNG")
->>>>>>> affce692b288b06639231bd58727581de56bc3ac
     d.seek(0)
     return d
 
@@ -315,7 +315,7 @@ async def headache(text):
     file = headachegen(text) 
 
     return StreamingResponse(file, media_type="image/png")
-    
+
 @app.get("/Image/contrast_enhance", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
 async def um_dad(text):
        
