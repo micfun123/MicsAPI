@@ -123,6 +123,24 @@ def generate_image_Trash(imageUrl):
     d.seek(0)
     return d
 
+def ghost(imageUrl):
+    hdr = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+    req = urllib.request.Request(imageUrl, headers=hdr)
+    response = urllib.request.urlopen(req) 
+    f = io.BytesIO(response.read())
+    
+    im1 = Image.open("images/ghost.jpg")
+    im2 = Image.open(f)
+    im2 = im2.resize((90, 90))
+
+    img = im1.copy()
+    img.paste(im2, (120, 700))
+    d = BytesIO()
+    d.seek(0)
+    img.save(d, "PNG")
+    d.seek(0)
+    return d
+
 def generate_image_I_wish(text):
     im = Image.open("images/Iwish.jpg")
     draw = ImageDraw.Draw(im)
@@ -334,5 +352,12 @@ async def um_dad(text):
 async def um_dad(text):
        
     file = image_black_white(text) 
+
+    return StreamingResponse(file, media_type="image/png")
+
+@app.get("/filters/ghost", responses = {200: {"content": {"image/png": {}}}}, response_class=StreamingResponse)
+async def ghoster(url):
+       
+    file = ghost(url) 
 
     return StreamingResponse(file, media_type="image/png")
