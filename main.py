@@ -11,7 +11,7 @@ import textwrap
 app = FastAPI(
     title = "Mics TextAPI",
     description="Generate image text in a video game font \n This what made by Michael twitter = https://twitter.com/Michaelrbparker \n The github repo = https://github.com/micfun123/MicsAPI",
-    version="2.1.0",
+    version="2.1.1",
     license_info={
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT",
