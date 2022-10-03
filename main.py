@@ -1,12 +1,15 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse , RedirectResponse , StreamingResponse
+from fastapi.responses import FileResponse , RedirectResponse , StreamingResponse,JSONResponse
 from PIL import Image, ImageDraw, ImageFont , ImageEnhance
+from fastapi.staticfiles import StaticFiles
 from io import BytesIO
 import urllib.request 
 import io
 import os
 import qrcode
+import random
 import textwrap
+
 
 app = FastAPI(
     title = "Mics TextAPI",
@@ -19,6 +22,18 @@ app = FastAPI(
 
 )
 
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+
+def getRandomFile(path):
+  """
+  Returns a random filename, chosen among the files of the given path.
+  """
+  files = os.listdir(path)
+  index = random.randrange(0, len(files))
+  return files[index]
 
 fontm = ImageFont.truetype('fontm.ttf', 50)
 fontp = ImageFont.truetype('PokemonSolid.ttf', 50)
@@ -361,3 +376,23 @@ async def ghoster(url):
     file = ghost(url) 
 
     return StreamingResponse(file, media_type="image/png")
+
+@app.get("/tea")
+def tea():
+    x = "static/teacuppics/{}".format(getRandomFile("static/teacuppics"))
+    return FileResponse(x)
+
+
+@app.get('/json/tea')
+async def teajson(request: Request) -> JSONResponse:
+    img = "teacuppics/{}".format(getRandomFile("static/teacuppics"))
+    img_url = request.url_for('static', path=img)
+    return {'img_url': img_url}
+
+@app.get("/json/coffee")
+def coffeejson(request: Request) -> JSONResponse:
+    img = "coffeecups/{}".format(getRandomFile("static/coffeecups"))
+    img_url = request.url_for('static', path=img)
+    return {'img_url': img_url}
+
+
