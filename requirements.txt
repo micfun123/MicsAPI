@@ -1,13 +1,11 @@
-# To ensure app dependencies are ported from your virtual environment/host machine into your container, run 'pip freeze > requirements.txt' in the terminal to overwrite this file
-fastapi[all]==0.70.1
-uvicorn[standard]==0.15.0
-gunicorn==20.1.0
 Pillow == 8.4.0
 aiohttp == 3.8.1
 aiosqlite == 0.17.0
 asyncpraw == 7.5.0
+fastapi == 0.73.0
 psutil == 5.9.0
 python_dotenv == 0.19.2
 qrcode == 7.3.1
+uvicorn
 ColorThief
 python-multipart
