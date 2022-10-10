@@ -23,7 +23,7 @@ app = FastAPI(
 )
 
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 
@@ -35,9 +35,9 @@ def getRandomFile(path):
   index = random.randrange(0, len(files))
   return files[index]
 
-fontm = ImageFont.truetype('fontm.ttf', 50)
-fontp = ImageFont.truetype('PokemonSolid.ttf', 50)
-fonta = ImageFont.truetype('AvengeroRegular.ttf', 50)
+fontm = ImageFont.truetype('app/fontm.ttf', 50)
+fontp = ImageFont.truetype('app/PokemonSolid.ttf', 50)
+fonta = ImageFont.truetype('app/AvengeroRegular.ttf', 50)
 
 def qrcodemaker(text):
     qr = qrcode.QRCode(
@@ -108,7 +108,7 @@ def generate_image_Wanted(imageUrl):
     response = urllib.request.urlopen(req) 
     f = io.BytesIO(response.read())
     
-    im1 = Image.open("images/wanted.jpg")
+    im1 = Image.open("app/images/wanted.jpg")
     im2 = Image.open(f)
     im2 = im2.resize((300, 285))
 
@@ -126,7 +126,7 @@ def generate_image_Trash(imageUrl):
     response = urllib.request.urlopen(req) 
     f = io.BytesIO(response.read())
     
-    im1 = Image.open("images/trasher.jpg")
+    im1 = Image.open("app/images/trasher.jpg")
     im2 = Image.open(f)
     im2 = im2.resize((75, 75))
 
@@ -144,7 +144,7 @@ def ghost(imageUrl):
     response = urllib.request.urlopen(req) 
     f = io.BytesIO(response.read())
     
-    im1 = Image.open("images/ghost.jpg")
+    im1 = Image.open("app/images/ghost.jpg")
     im2 = Image.open(f)
     im2 = im2.resize((90, 90))
 
@@ -157,9 +157,9 @@ def ghost(imageUrl):
     return d
 
 def generate_image_I_wish(text):
-    im = Image.open("images/Iwish.jpg")
+    im = Image.open("app/images/Iwish.jpg")
     draw = ImageDraw.Draw(im)
-    font = ImageFont.truetype("Roboto-Black.ttf", 16)
+    font = ImageFont.truetype("app/Roboto-Black.ttf", 16)
     margin = 60
     offset = 290
     for line in textwrap.wrap(text, width=30):
@@ -174,9 +174,9 @@ def generate_image_I_wish(text):
     return d
 
 def generate_image_ifread(text):
-    im = Image.open("images/iftheycouldread.jpg")
+    im = Image.open("app/images/iftheycouldread.jpg")
     draw = ImageDraw.Draw(im)
-    font = ImageFont.truetype("Roboto-Black.ttf", 16)
+    font = ImageFont.truetype("app/Roboto-Black.ttf", 16)
 
     margin = 265
     offset = 85
@@ -193,9 +193,9 @@ def generate_image_ifread(text):
     return d
 
 def generate_image_um_dad(text):
-    im = Image.open("images/Umdad.jpg")
+    im = Image.open("app/images/Umdad.jpg")
     draw = ImageDraw.Draw(im)
-    font = ImageFont.truetype("Roboto-Black.ttf", 16)
+    font = ImageFont.truetype("app/Roboto-Black.ttf", 16)
 
     margin = 80
     offset = 420
@@ -252,9 +252,9 @@ def image_black_white(imageUrl):
     return d
 
 def headachegen(text):
-    im = Image.open("images/headache.png")
+    im = Image.open("app/images/headache.png")
     draw = ImageDraw.Draw(im)
-    font = ImageFont.truetype("Roboto-Black.ttf", 16)
+    font = ImageFont.truetype("app/Roboto-Black.ttf", 16)
 
     margin = 160
     offset = 200
