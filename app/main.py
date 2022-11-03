@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse , RedirectResponse , StreamingResponse,JSONResponse
-from PIL import Image, ImageDraw, ImageFont , ImageEnhance
+from PIL import Image, ImageDraw, ImageFont , ImageEnhance , ImageSequence
 from fastapi.staticfiles import StaticFiles
 from io import BytesIO
 import urllib.request 
@@ -111,6 +111,7 @@ def generate_image_Wanted(imageUrl):
     im1 = Image.open("app/images/wanted.jpg")
     im2 = Image.open(f)
     im2 = im2.resize((300, 285))
+    im2 = im2.alpha_composite(im2)
 
     img = im1.copy()
     img.paste(im2, (85, 230))
@@ -135,6 +136,33 @@ def generate_image_Trash(imageUrl):
     d = BytesIO()
     d.seek(0)
     img.save(d, "PNG")
+    d.seek(0)
+    return d
+
+
+def slap(imageUrl):
+    hdr = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+    req = urllib.request.Request(imageUrl, headers=hdr)
+    response = urllib.request.urlopen(req) 
+    f = io.BytesIO(response.read())
+    
+    im1 = Image.open("app/images/slap1.gif")
+    im2 = Image.open(f)
+    im2 = im2.resize((100, 100))
+    im2 = im2.convert("RGBA")
+    
+   
+    frames = []
+    for frame in ImageSequence.Iterator(im1):
+        frame = frame.copy()
+        frame = frame.convert("RGBA")
+        frame.paste(im2, (500, 90))
+        frames.append(frame)
+        
+
+    d = BytesIO()
+    d.seek(0)
+    frames[0].save(d,'output.gif', save_all=True, append_images=frames[1:-1]) 
     d.seek(0)
     return d
 
