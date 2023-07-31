@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, url_for
+from flask import Flask, request, jsonify, url_for,redirect
 import os
 import random
 import json
@@ -35,6 +35,15 @@ def cat_fact():
     facts = json.load(open('static/cat_fact.json'))
     fact = random.choice(facts)
     return jsonify({'fact': fact})
+
+@app.route('/')
+def index():
+    return "<h1> Hello World </h1>"
+
+#404 error
+@app.errorhandler(404)
+def page_not_found(e):
+    return redirect(url_for('index'))
 
 
 
